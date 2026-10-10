@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>it's your b'day</title>
+    <link rel="stylesheet" href="j.css">
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+    <!-- Background Music Audio Tag -->
+    <audio id="bg-music" loop src="Jungkook - Still with you.m4a"></audio>
+
+    <!-- Floating Music Controls Button (Top-Left Positioned) -->
+    <button id="music-toggle-btn" class="music-toggle-floating" onclick="toggleAudioPlayback()" aria-label="Toggle Background Music">
+        <span id="music-icon">🎵</span>
+    </button>
+
+    <!-- SCREEN 1: PASSWORD LOCK PANEL -->
+    <div id="screen-lock" class="view-panel active-panel">
+        <div class="display-card">
+            <h2 class="lock-heading">Enter Secret Password🗝️</h2>
+            <div class="secure-field-wrap">
+                <input type="password" id="entry-passkey" placeholder="Enter password...">
+                <div id="lock-error-msg" class="error-notification"></div>
+            </div>
+            <button onclick="checkPasskey()" class="action-btn">khul ja sim sim</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 2: THE PROPOSAL -->
+    <div id="screen-proposal" class="view-panel">
+        <div class="full-canvas-striped">
+            <h2 class="bubble-title">Hey! I made something for you<br>do you wanna see it? 👀</h2>
+            <img src="cat image.jpg" alt="Proposal Attachment" class="mid-avatar">
+            <div class="button-row">
+                <button onclick="navigateToPanel('screen-confirmation')" class="action-btn choice-btn">Yes</button>
+                <button onclick="navigateToPanel('screen-rejected')" class="action-btn choice-btn">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCREEN 3: REJECTED STATE -->
+    <div id="screen-rejected" class="view-panel">
+        <div class="full-canvas-striped">
+            <h2 class="bubble-title anger-color">SERIOUSLY!? how dare you hmph 😤</h2>
+            <img src="angry cat.jpg" alt="Angry Reaction" class="mid-avatar">
+            <button onclick="navigateToPanel('screen-proposal')" class="action-btn">Go back</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 4: CONFIRMATION STATE -->
+    <div id="screen-confirmation" class="view-panel">
+        <div class="full-canvas-striped">
+            <img src="dog.jpg" alt="Happy Response" class="heart-avatar">
+            <h2 class="bubble-title sweet-color">That's my Gurlll 🌻</h2>
+            <button onclick="navigateToPanel('screen-cover')" class="action-btn">Click</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 4.5: FULL-SCREEN BIRTHDAY COVER PAGE -->
+    <div id="screen-cover" class="view-panel">
+        <div class="full-canvas-striped birthday-cover-frame">
+            <h1 class="cover-main-title">Happy</h1>
+            <div class="center-photo-frame">
+                <img src="happy bday.jpg" alt="Birthday Person" class="celebrant-img">
+            </div>
+            <h1 class="cover-sub-title">Birthday</h1>
+            <button onclick="navigateToPanel('screen-dashboard')" class="action-btn alignment-bottom-right">Next 👉</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 5: GIFT DASHBOARD -->
+    <div id="screen-dashboard" class="view-panel">
+        <div class="full-canvas-striped">
+            <h2 class="instruction-heading">click on each item to open ✨</h2>
+            <div class="gift-items-grid">
+                <div class="gift-node-item" onclick="launchModalWindow('modal-gallery')">
+                    <img src="box.jpg" class="gift-icon-graphic" alt="Camera Icon">
+                    <p class="gift-label"></p>
+                </div>
+                <div class="gift-node-item" onclick="launchModalWindow('modal-letter')">
+                    <img src="box.jpg" class="gift-icon-graphic" alt="Letter Icon">
+                    <p class="gift-label"></p>
+                </div>
+            
+                <div class="gift-node-item" onclick="launchModalWindow('modal-scratch')">
+                    <div class="gift-emoji-icon">🎟️</div>
+                    <p class="gift-label"></p>
+                </div>
+                <div class="gift-node-item" onclick="launchModalWindow('modal-quiz')">
+                    <div class="gift-emoji-icon">🧩</div>
+                    <p class="gift-label"></p>
+                </div>
+            </div>
+            <button onclick="navigateToPanel('screen-cake')" class="action-btn alignment-bottom-right">Next 👉</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 5.5: INTERACTIVE CAKE CANDLE PAGE -->
+    <div id="screen-cake" class="view-panel">
+        <div class="full-canvas-striped">
+            <h2 id="cake-instruction" class="bubble-title">Blow into your mic 🎤🎂</h2>
+            
+            <div class="cake-container" onclick="blowOutCandle()">
+                <div class="candle">
+                    <div id="candle-flame" class="flame"></div>
+                </div>
+                <div class="cake-top"></div>
+                <div class="cake-base"></div>
+            </div>
+
+            <p id="wish-message" class="wish-text" style="display: none;">Your wish has been granted ✨</p>
+
+            <button id="cake-next-btn" onclick="navigateToPanel('screen-outro')" class="action-btn alignment-bottom-right" style="display: none;">Next 👉</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 6: OUTRO PANEL -->
+    <div id="screen-outro" class="view-panel">
+        <div class="full-canvas-striped">
+            <h2 class="bubble-title">Happy Birthday Once Again! 🎉🎂</h2>
+            <p style="color: #5b2c6f; font-size: 1.1rem; max-width: 400px; margin-bottom: 30px;">
+                Hope this little effort brought a huge smile to your face today. Have the best year ahead!
+            </p>
+            <img src="cute.jpg" alt="Celebration Ends" class="mid-avatar">
+            <button onclick="navigateToPanel('screen-dashboard')" class="action-btn">Back to Gifts 🎁</button>
+        </div>
+    </div>
+
+    <!-- MODAL 1: MEMORIES GALLERY (GOOGLE IMAGES STYLING) -->
+    <div id="modal-gallery" class="modal-viewport-container">
+        <div class="search-theme-window">
+            <span class="dismiss-cross-button" onclick="closeActiveModal('modal-gallery')">&times;</span>
+            
+            <!-- Google Search Header -->
+            <div class="google-header">
+                <div class="google-logo-and-bar">
+                    <div class="google-logo">
+                        <span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span>
+                    </div>
+                    <div class="google-search-bar">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" value="my princess " readonly>
+                        <span class="clear-icon">✖</span>
+                    </div>
+                </div>
+                <div class="google-filter-tabs">
+                    <span class="filter-tab active-tab">🖼️ Images</span>
+                    <span class="filter-tab">🔍 All</span>
+                    <span class="filter-tab">🎥 Videos</span>
+                    <span class="filter-tab">📰 News</span>
+                </div>
+            </div>
+
+            <div class="scrollable-photo-body">
+                <div class="photo-matrix-grid">
+                    <div class="photo-container-box" onclick="openPhotoViewer('memory 1.jpeg',)"><img src="memory 1.jpeg" alt="Memory 1"></div>
+                    <div class="photo-container-box" onclick="openPhotoViewer('memory 2.jpeg', )"><img src="memory 2 .jpeg" alt="Memory 2"></div>
+                    <div class="photo-container-box" onclick="openPhotoViewer('memory 3.jpeg', )"><img src="memory 3.jpeg" alt="Memory 3"></div>
+                    <div class="photo-container-box" onclick="openPhotoViewer('memory 4.jpeg', )"><img src="memory 4 .jpeg" alt="Memory 4"></div>
+                    <div class="photo-container-box" onclick="openPhotoViewer('memory 5.jpeg', )"><img src="memory 5 .jpeg" alt="Memory 5"></div>
+                    <div class="photo-container-box" onclick="openPhotoViewer('memory 6.jpeg', )"><img src="memory 6 .jpeg" alt="Memory 6"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PHOTO VIEWER (LIGHTBOX) -->
+    <div id="modal-photo-viewer" class="modal-viewport-container">
+        <div class="lightbox-content">
+            <span class="dismiss-cross-button" onclick="closeActiveModal('modal-photo-viewer')">&times;</span>
+            <img id="lightbox-img" src="" alt="Enlarged Memory">
+            <p id="lightbox-caption" class="lightbox-caption-text"></p>
+        </div>
+    </div>
+
+    <!-- MODAL 2: PERSONAL LETTER -->
+    <div id="modal-letter" class="modal-viewport-container">
+        <div class="modal-dialogue-window">
+            <span class="dismiss-cross-button" onclick="closeActiveModal('modal-letter')">&times;</span>
+            <div class="scrollable-letter-box">
+                <div class="letter-notepad-theme">
+                    <h3 class="letter-salutation">Dear cutie, 💖</h3>
+                    <p class="letter-body-prose">
+                      Happy Birthday, My Pretty Girl! 🎂❤️
+                      Happy Birthday to the most beautiful, adorable, precious, and special girl in my entire world, my Karunya. 🥹❤️ 
+                    </p>
+                    <p class="letter-body-prose">
+                    If someone asked me what my favourite thing in this world is, I would probably talk about your beautiful eyes, your gorgeous hair, your heart-melting smile, and that ridiculously cute face of yours that never fails to make me smile. But honestly, sweetheart, what makes you so special to me is not just your beauty; it's the little things that make you YOU. Your childish behaviour, your adorable little tantrums, your cute possessive side, the way you act all silly sometimes, and all those tiny things you probably don't even realise I love about you. 🎀😭 You have this beautiful way of making ordinary moments feel special just by being a part of them. I wish I could put into words exactly how much you mean to me, but somehow, every word feels too small for what I feel in my heart. You are someone who makes me smile at my phone like an idiot,
+                    </p>
+                    <p class="text-signature">With love,<br>Sameer ✨</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+
+    <!-- MODAL 4: VIRTUAL SCRATCH COUPON -->
+    <div id="modal-scratch" class="modal-viewport-container">
+        <div class="modal-dialogue-window" style="text-align: center;">
+            <span class="dismiss-cross-button" onclick="closeActiveModal('modal-scratch')">&times;</span>
+            <h3 style="color: #7d3c98; margin-bottom: 10px;">Scratch Your Gift! 🎟️</h3>
+            <p style="color: #666; font-size: 0.85rem; margin-bottom: 15px;">Use your mouse/finger to scratch the card below!</p>
+            
+            <div class="scratch-card-wrapper">
+                <div class="scratch-prize-layer">
+                    <span class="prize-emoji"> Pass</span>
+                    <p class="prize-text">Valid for 1 treat on Me!</p>
+                </div>
+                <canvas id="scratch-canvas" width="280" height="150"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 5: TRIVIA QUIZ -->
+    <div id="modal-quiz" class="modal-viewport-container">
+        <div class="modal-dialogue-window" style="text-align: center;">
+            <span class="dismiss-cross-button" onclick="closeActiveModal('modal-quiz')">&times;</span>
+            <h3 style="color: #7d3c98; margin-bottom: 15px;"> Trivia Quiz 🧩</h3>
+            
+            <div id="quiz-container">
+                <p id="quiz-question" class="quiz-q-text">Loading question...</p>
+                <div id="quiz-options" class="quiz-options-list"></div>
+                <p id="quiz-feedback" class="quiz-feedback-msg"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="j.js"></script>
+</body>
+</html>
