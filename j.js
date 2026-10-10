@@ -44,7 +44,7 @@ function checkPasskey() {
     const enteredValue = passwordInput.value.trim();
 
     // Passkey check
-    if (enteredValue === "sameer") {
+    if (enteredValue === "karunya") {
         if (errorElement) errorElement.innerText = "";
         navigateToPanel("screen-proposal"); 
 
@@ -254,8 +254,8 @@ function initScratchCard() {
 // ==========================================================================
 const quizData = [
     {
-        question: "What is my absolute favorite thing to do when we gather?",
-        options: [ "Study silently", "Run a marathon", "Argue over nothing"],
+        question: "if we had a day ahead of us with no plans , you'll never say no to ?",
+        options: [ "a cute cafe date", "road trip", "video game"],
         correct: 2
     },
     {
